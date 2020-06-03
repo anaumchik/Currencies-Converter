@@ -5,9 +5,9 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/currenciesRv"
+        android:id="@+id/converterRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_currency" />
+        tools:listitem="@layout/item_converter" />
 
 </FrameLayout>

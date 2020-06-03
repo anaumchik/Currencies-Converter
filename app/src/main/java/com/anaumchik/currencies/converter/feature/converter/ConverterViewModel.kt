@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anaumchik.currencies.converter.R
 import com.anaumchik.currencies.converter.feature.converter.interactor.ConverterInteractor
 import com.anaumchik.currencies.converter.models.Currency
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,8 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
     }
 
     private suspend fun getCurrencies() {
-        val currencies = converterInteractor.getCurrencies()
+//        val currencies = converterInteractor.getCurrencies()
+        val currencies = listOf<Currency>(Currency("EUR", "Euro", 8193.43, R.drawable.ic_eu))
         _currenciesLiveData.postValue(currencies)
     }
 }
