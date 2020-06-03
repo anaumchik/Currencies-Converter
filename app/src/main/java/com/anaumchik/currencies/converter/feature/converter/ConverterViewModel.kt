@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anaumchik.currencies.converter.network.models.CurrenciesResponse
+import com.anaumchik.currencies.converter.feature.converter.interactor.ConverterInteractor
+import com.anaumchik.currencies.converter.models.Currency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ConverterViewModel(private val repository: ConverterRepository) : ViewModel() {
+class ConverterViewModel(private val converterInteractor: ConverterInteractor) : ViewModel() {
 
-    private val _currenciesLiveData = MutableLiveData<CurrenciesResponse>()
-    val currenciesLiveData: LiveData<CurrenciesResponse> = _currenciesLiveData
+    private val _currenciesLiveData = MutableLiveData<List<Currency>>()
+    val currenciesLiveData: LiveData<List<Currency>> = _currenciesLiveData
 
     fun startUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,7 +30,7 @@ class ConverterViewModel(private val repository: ConverterRepository) : ViewMode
     }
 
     private suspend fun getCurrencies() {
-        val currencies = repository.getCurrencies()
+        val currencies = converterInteractor.getCurrencies()
         _currenciesLiveData.postValue(currencies)
     }
 }

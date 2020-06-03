@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Currencies Converter</string>
+    <string name="currency_usd">US Dollar</string>
+    <string name="currency_cad">Canadian Dollar</string>
+    <string name="currency_eur">Euro</string>
+    <string name="currency_sek">Swedish Krona</string>
 </resources>
