@@ -7,7 +7,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.anaumchik.weather.app"
+        applicationId "com.anaumchik.currencies.converter"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
