@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anaumchik.currencies.converter.R
 import com.anaumchik.currencies.converter.feature.converter.adapter.ConverterAdapter
 import com.anaumchik.currencies.converter.feature.converter.adapter.ConverterAdapterListener
 import com.anaumchik.currencies.converter.utils.toolbarTitle
 import kotlinx.android.synthetic.main.fragment_converter.converterRv
-
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ConverterFragment : Fragment() {
@@ -23,8 +21,12 @@ class ConverterFragment : Fragment() {
     private val converterAdapter by lazy { ConverterAdapter() }
 
     private val converterAdapterListener = object : ConverterAdapterListener {
-        override fun onUpdate(update: Unit) {
-            TODO("Not yet implemented")
+        override fun onMoveToTop(position: Int) {
+            converterAdapter.onItemMoveToZero(position)
+        }
+
+        override fun onUpdateValues(value: Double) {
+            viewModel.onUpdateCurrencies(value)
         }
     }
 

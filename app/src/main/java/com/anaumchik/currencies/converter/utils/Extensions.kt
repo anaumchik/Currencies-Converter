@@ -32,3 +32,5 @@ fun ImageView.loadDrawable(@DrawableRes drawableRes: Int) = Glide
     .load(drawableRes)
     .fitCenter()
     .into(this)
+
+fun Double.round(decimals: Int = 2): Double = "%.${decimals}f".format(this).toDouble()

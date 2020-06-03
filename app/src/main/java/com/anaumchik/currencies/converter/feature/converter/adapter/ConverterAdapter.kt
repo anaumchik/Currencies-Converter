@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anaumchik.currencies.converter.R
 import com.anaumchik.currencies.converter.models.Currency
 import com.anaumchik.currencies.converter.utils.inflate
+import java.util.Collections
 
 class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
 
@@ -21,8 +22,19 @@ class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
 
     override fun onBindViewHolder(holder: ConverterViewHolder, position: Int) {
         val currency = data[position]
-        holder.initViewHolder(currency, listener)
+        val baseCurrency = data[POSITION_ZERO]
+        holder.initViewHolder(currency, baseCurrency, listener)
     }
 
     override fun getItemCount(): Int = data.size
+
+    fun onItemMoveToZero(fromPosition: Int) {
+        Collections.swap(data, fromPosition, POSITION_ZERO)
+        notifyItemMoved(fromPosition, POSITION_ZERO)
+    }
+
+    companion object {
+        const val ROUND_TWO_PLACES = 2
+        const val POSITION_ZERO = 0
+    }
 }
