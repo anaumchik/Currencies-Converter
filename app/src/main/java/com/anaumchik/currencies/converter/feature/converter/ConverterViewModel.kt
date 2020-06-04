@@ -28,23 +28,28 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
         viewModelScope.cancel()
     }
 
-    fun onUpdateCurrencies(total: Double) {
-        val updatedCurrencies = _currenciesLiveData.value
-            ?.toMutableList()
-            ?.apply {
-                val baseCurrency = this.first()
-
-                val newCurrencyTotal = total * baseCurrency.currencyRate
-                val newBaseCurrency = baseCurrency.copy(currencyTotal = newCurrencyTotal)
-
-                this[0] = newBaseCurrency
-            }
-
+    fun onUpdateCurrencies(baseTotal: Double) {
+        val updatedCurrencies = updateTotal(_currenciesLiveData.value, baseTotal)
         _currenciesLiveData.postValue(updatedCurrencies)
     }
 
     private suspend fun getCurrencies() {
         val currencies = converterInteractor.getCurrencies()
-        _currenciesLiveData.postValue(currencies)
+
+        val baseCurrency = currencies.first()
+        val baseTotal = baseCurrency.currencyRate * baseCurrency.currencyTotal
+
+        val updatedCurrencies = updateTotal(currencies, baseTotal)
+        _currenciesLiveData.postValue(updatedCurrencies)
     }
+
+    private fun updateTotal(currencies: List<Currency>?, baseTotal: Double): List<Currency>? = currencies
+        ?.toMutableList()
+        ?.mapIndexed { index, currency ->
+            if (index == 0) {
+                currency.copy(currencyTotal = baseTotal)
+            } else {
+                currency.copy(currencyTotal = baseTotal * currency.currencyRate)
+            }
+        }
 }

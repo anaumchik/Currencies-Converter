@@ -9,6 +9,8 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.toolbar
 
+const val ROUND_TWO_PLACES = 2
+
 fun Fragment.string(@StringRes stringRes: Int): String = this.getString(stringRes)
 fun View.string(@StringRes stringRes: Int): String = this.context.getString(stringRes)
 fun Context.string(@StringRes stringRes: Int): String = this.getString(stringRes)
@@ -20,4 +22,4 @@ fun Fragment.toolbarTitle(@StringRes stringRes: Int) {
     requireActivity().toolbar.title = string(stringRes)
 }
 
-fun Double.round(decimals: Int = 2): Double = "%.${decimals}f".format(this).toDouble()
+fun Double.round(decimals: Int): Double = "%.${decimals}f".format(this).toDouble()

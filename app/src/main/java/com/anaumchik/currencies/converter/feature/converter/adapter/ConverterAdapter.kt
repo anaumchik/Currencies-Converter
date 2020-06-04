@@ -18,7 +18,7 @@ class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
 
     override fun onBindViewHolder(holder: ConverterViewHolder, position: Int) {
         val currency = data[position]
-        val baseCurrency = data[POSITION_ZERO]
+        val baseCurrency = data[BASE_CURRENCY_POSITION]
         holder.initViewHolder(currency, baseCurrency, listener)
     }
 
@@ -30,12 +30,11 @@ class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
     }
 
     fun onItemMoveToTop(fromPosition: Int) {
-        Collections.swap(data, fromPosition, POSITION_ZERO)
-        notifyItemMoved(fromPosition, POSITION_ZERO)
+        Collections.swap(data, fromPosition, BASE_CURRENCY_POSITION)
+        notifyItemMoved(fromPosition, BASE_CURRENCY_POSITION)
     }
 
     companion object {
-        const val ROUND_TWO_PLACES = 2
-        const val POSITION_ZERO = 0
+        const val BASE_CURRENCY_POSITION = 0
     }
 }

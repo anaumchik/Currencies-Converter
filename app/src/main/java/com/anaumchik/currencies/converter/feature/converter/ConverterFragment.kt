@@ -25,8 +25,8 @@ class ConverterFragment : Fragment() {
             converterAdapter.onItemMoveToTop(position)
         }
 
-        override fun onUpdateCurrencies(total: Double) {
-            viewModel.onUpdateCurrencies(total)
+        override fun onUpdateCurrencies(baseTotal: Double) {
+            viewModel.onUpdateCurrencies(baseTotal)
         }
     }
 

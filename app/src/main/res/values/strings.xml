@@ -5,4 +5,5 @@
     <string name="currency_cad">Canadian Dollar</string>
     <string name="currency_eur">Euro</string>
     <string name="currency_sek">Swedish Krona</string>
+    <string name="currency_value_default">0</string>
 </resources>
