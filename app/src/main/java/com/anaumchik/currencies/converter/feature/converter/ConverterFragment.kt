@@ -29,8 +29,8 @@ class ConverterFragment : Fragment() {
             viewModel.onUpdateCurrencies(baseTotal)
         }
 
-        override fun onUpdateBaseRate(newBaseRate: Double) {
-            viewModel.onUpdateBaseRate(newBaseRate)
+        override fun onUpdateBaseRate(newBaseRate: Double, newBaseTotal: Double) {
+            viewModel.onUpdateBaseRate(newBaseRate, newBaseTotal)
         }
     }
 

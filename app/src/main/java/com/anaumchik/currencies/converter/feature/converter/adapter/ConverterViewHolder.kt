@@ -112,5 +112,5 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
 interface ConverterAdapterListener {
     fun onItemMoveToTop(position: Int)
     fun onUpdateCurrencies(baseTotal: Double)
-    fun onUpdateBaseRate(newBaseRate: Double)
+    fun onUpdateBaseRate(newBaseRate: Double, newBaseTotal: Double)
 }

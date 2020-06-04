@@ -33,9 +33,10 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
         _currenciesLiveData.postValue(updatedCurrencies)
     }
 
-    fun onUpdateBaseRate(newBaseRate: Double) {
-        val updatedCurrencies = updateTotalAndRate(_currenciesLiveData.value, newBaseRate)
-        _currenciesLiveData.postValue(updatedCurrencies)
+    fun onUpdateBaseRate(newBaseRate: Double, newBaseTotal: Double) {
+        val updatedRateCurrencies = updateRate(_currenciesLiveData.value, newBaseRate)
+        val updateTotalCurrencies = updateTotal(updatedRateCurrencies, newBaseTotal)
+        _currenciesLiveData.postValue(updateTotalCurrencies)
     }
 
     private suspend fun getCurrencies() {
@@ -58,7 +59,7 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
             }
         }
 
-    private fun updateTotalAndRate(currencies: List<Currency>?, newBaseRate: Double): List<Currency>? = currencies
+    private fun updateRate(currencies: List<Currency>?, newBaseRate: Double): List<Currency>? = currencies
         ?.toMutableList()
         ?.mapIndexed { index, currency ->
             if (index == 0) {
