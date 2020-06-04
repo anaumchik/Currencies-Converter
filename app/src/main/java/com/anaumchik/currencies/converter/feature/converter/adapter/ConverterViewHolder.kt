@@ -35,8 +35,8 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
 
         initBlock()
         setCurrencyHintIfTotalZero()
-        setListenerToSwapItemToTop()
-        setListenerToUpdateCurrencies()
+        initListenerToSwapItemToTop()
+        initListenerToUpdateCurrencies()
     }
 
     private fun initBlock() {
@@ -61,7 +61,7 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
         }
     }
 
-    private fun setListenerToSwapItemToTop() {
+    private fun initListenerToSwapItemToTop() {
         etCurrency.setOnFocusChangeListener { _, hasFocus ->
             if (!isBaseCurrency() && hasFocus) {
                 listener.onItemMoveToTop(adapterPosition)
@@ -69,7 +69,7 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
         }
     }
 
-    private fun setListenerToUpdateCurrencies() {
+    private fun initListenerToUpdateCurrencies() {
         etCurrency.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit

@@ -10,16 +10,16 @@ class ConverterInteractorImpl(
     private val converterUtils: ConverterUtils
 ) : ConverterInteractor {
 
+    private val defaultCurrency = Currency(
+        currencyIconRes = R.drawable.ic_eu,
+        countryName = DEFAULT_COUNTRY_NAME,
+        countryCurrency = DEFAULT_COUNTRY_CURRENCY,
+        currencyTotal = DEFAULT_CURRENCY_TOTAL
+    )
+
     override suspend fun getCurrencies(): List<Currency> {
         val currencies = mutableListOf<Currency>()
-        currencies.add(
-            Currency(
-                currencyIconRes = R.drawable.ic_eu,
-                countryName = "EUR",
-                countryCurrency = "Euro",
-                currencyTotal = 100.00
-            )
-        )
+        currencies.add(defaultCurrency)
         converterRepository.getCurrencies().rates.forEach {
             if (converterUtils.mapExistCountries(it.key)) {
                 val currency = Currency(
@@ -33,5 +33,11 @@ class ConverterInteractorImpl(
         }
 
         return currencies
+    }
+
+    companion object {
+        private const val DEFAULT_COUNTRY_NAME = "EUR"
+        private const val DEFAULT_COUNTRY_CURRENCY = "EUR"
+        private const val DEFAULT_CURRENCY_TOTAL = 100.00
     }
 }
