@@ -8,21 +8,19 @@ import com.anaumchik.currencies.converter.feature.converter.interactor.Converter
 import com.anaumchik.currencies.converter.models.Currency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ConverterViewModel(private val converterInteractor: ConverterInteractor) : ViewModel() {
 
-    private var totals = listOf<Double>()
     private val _currenciesLiveData = MutableLiveData<List<Currency>>()
     val currenciesLiveData: LiveData<List<Currency>> = _currenciesLiveData
 
     fun startUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
-            while (true) {
-                getCurrencies()
-                delay(1000)
-            }
+//            while (true) {
+            getCurrencies()
+//                delay(1000)
+//            }
         }
     }
 
@@ -30,8 +28,19 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
         viewModelScope.cancel()
     }
 
-    fun onUpdateCurrencies(value: Double) {
-        // TODO
+    fun onUpdateCurrencies(total: Double) {
+        val updatedCurrencies = _currenciesLiveData.value
+            ?.toMutableList()
+            ?.apply {
+                val baseCurrency = this.first()
+
+                val newCurrencyTotal = total * baseCurrency.currencyRate
+                val newBaseCurrency = baseCurrency.copy(currencyTotal = newCurrencyTotal)
+
+                this[0] = newBaseCurrency
+            }
+
+        _currenciesLiveData.postValue(updatedCurrencies)
     }
 
     private suspend fun getCurrencies() {

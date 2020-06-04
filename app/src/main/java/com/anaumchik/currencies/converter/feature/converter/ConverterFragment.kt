@@ -21,12 +21,12 @@ class ConverterFragment : Fragment() {
     private val converterAdapter by lazy { ConverterAdapter() }
 
     private val converterAdapterListener = object : ConverterAdapterListener {
-        override fun onMoveToTop(position: Int) {
-            converterAdapter.onItemMoveToZero(position)
+        override fun onItemMoveToTop(position: Int) {
+            converterAdapter.onItemMoveToTop(position)
         }
 
-        override fun onUpdateValues(value: Double) {
-            viewModel.onUpdateCurrencies(value)
+        override fun onUpdateCurrencies(total: Double) {
+            viewModel.onUpdateCurrencies(total)
         }
     }
 
@@ -37,12 +37,8 @@ class ConverterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbarTitle(R.string.converter_toolbar_title)
-        viewModel.currenciesLiveData.observe(viewLifecycleOwner, Observer { currencies ->
-            Log.d("ConverterFragment", "received from server: $currencies")
-            converterAdapter.data = currencies
-        })
-
         initAdapter()
+        observeViewModel()
     }
 
     override fun onResume() {
@@ -53,6 +49,13 @@ class ConverterFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.stopUpdates()
+    }
+
+    private fun observeViewModel() {
+        viewModel.currenciesLiveData.observe(viewLifecycleOwner, Observer { currencies ->
+            Log.d("ConverterFragment", "received from server: $currencies")
+            converterAdapter.onUpdateData(currencies)
+        })
     }
 
     private fun initAdapter() {

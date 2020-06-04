@@ -20,6 +20,7 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
     private var tvCountryName: TextView = view.countryNameTv
     private var tvCountryCurrency: TextView = view.countryCurrencyTv
     private var etCurrency: EditText = view.currencyEt
+    private var isInit = false
 
     fun initViewHolder(currency: Currency, baseCurrency: Currency, listener: ConverterAdapterListener) {
         imgCountry.setImageDrawable(view.context.getDrawable(currency.currencyIconRes))
@@ -27,27 +28,39 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
         tvCountryCurrency.text = currency.countryCurrency
 
         if (currency.countryName == baseCurrency.countryName) {
-            etCurrency.setText(baseCurrency.currencyTotal.toString())
+            etCurrency.setText(baseCurrency.currencyTotal.round(ConverterAdapter.ROUND_TWO_PLACES).toString())
         } else {
             val total = baseCurrency.currencyTotal * currency.currencyRate
             etCurrency.setText(total.round(ConverterAdapter.ROUND_TWO_PLACES).toString())
         }
+        isInit = true
 
         etCurrency.setOnFocusChangeListener { _, hasFocus ->
-            if (adapterPosition != ConverterAdapter.POSITION_ZERO && hasFocus) listener.onMoveToTop(adapterPosition)
+            if (!isBaseCurrency() && hasFocus) {
+                listener.onItemMoveToTop(adapterPosition)
+            }
         }
 
         etCurrency.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun afterTextChanged(s: Editable?) =
-                listener.onUpdateValues(etCurrency.text.toString().toDouble())
-
+            override fun afterTextChanged(s: Editable?) {
+                if (isInit && isBaseCurrency()) {
+                    if (s.toString().isNotEmpty()) {
+                        listener.onUpdateCurrencies(s.toString().toDouble())
+                    }
+                    isInit = false
+                }
+            }
         })
+    }
+
+    private fun isBaseCurrency(): Boolean {
+        return adapterPosition == ConverterAdapter.POSITION_ZERO
     }
 }
 
 interface ConverterAdapterListener {
-    fun onMoveToTop(position: Int)
-    fun onUpdateValues(value: Double)
+    fun onItemMoveToTop(position: Int)
+    fun onUpdateCurrencies(total: Double)
 }

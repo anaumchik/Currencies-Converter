@@ -9,11 +9,7 @@ import java.util.Collections
 
 class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
 
-    var data = listOf<Currency>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    private var data = listOf<Currency>()
 
     lateinit var listener: ConverterAdapterListener
 
@@ -28,7 +24,12 @@ class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
-    fun onItemMoveToZero(fromPosition: Int) {
+    fun onUpdateData(newData: List<Currency>) {
+        data = newData
+        notifyDataSetChanged()
+    }
+
+    fun onItemMoveToTop(fromPosition: Int) {
         Collections.swap(data, fromPosition, POSITION_ZERO)
         notifyItemMoved(fromPosition, POSITION_ZERO)
     }

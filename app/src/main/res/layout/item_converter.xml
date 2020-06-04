@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_eu" />
+        tools:src="@drawable/ic_canada" />
 
     <TextView
         android:id="@+id/countryNameTv"
@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toTopOf="@+id/countryCurrencyTv"
         app:layout_constraintStart_toEndOf="@+id/countryImg"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="EUR" />
+        tools:text="CAD" />
 
     <TextView
         android:id="@+id/countryCurrencyTv"
@@ -37,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/countryImg"
         app:layout_constraintTop_toBottomOf="@+id/countryNameTv"
-        tools:text="Euro" />
+        tools:text="Canadian Dollar" />
 
     <EditText
         android:id="@+id/currencyEt"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_color_black"
         android:textSize="20sp"
-        android:inputType="number"
+        android:inputType="number|numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
