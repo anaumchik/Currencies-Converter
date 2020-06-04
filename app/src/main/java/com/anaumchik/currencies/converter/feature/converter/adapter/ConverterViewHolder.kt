@@ -27,16 +27,24 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
     private var etCurrency: EditText = view.currencyEt
     private var isInit = false
     private var isZero = false
+    private var isSwap = false
 
     fun initViewHolder(currency: Currency, baseCurrency: Currency, listener: ConverterAdapterListener) {
         this.currency = currency
         this.listener = listener
+
+        if (this::baseCurrency.isInitialized) {
+            if (this.baseCurrency != baseCurrency) isSwap = true
+        }
+
         this.baseCurrency = baseCurrency
 
         initBlock()
         setCurrencyHintIfTotalZero()
         initListenerToSwapItemToTop()
         initListenerToUpdateCurrencies()
+
+        isSwap = false
     }
 
     private fun initBlock() {
@@ -49,6 +57,8 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
         } else {
             etCurrency.setText(currency.currencyTotal.round(ROUND_TWO_PLACES).toString())
         }
+
+        etCurrency.setSelection(etCurrency.text.length)
 
         isInit = true
     }
@@ -74,7 +84,7 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
-                if (isInit && isBaseCurrency()) {
+                if (!isSwap && isInit && isBaseCurrency()) {
                     if (s.toString().isNotEmpty()) {
                         val baseTotal = s.toString().toDouble() * currency.currencyRate
                         updateCurrencies(baseTotal)
@@ -102,4 +112,5 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
 interface ConverterAdapterListener {
     fun onItemMoveToTop(position: Int)
     fun onUpdateCurrencies(baseTotal: Double)
+    fun onUpdateBaseRate(newBaseRate: Double)
 }

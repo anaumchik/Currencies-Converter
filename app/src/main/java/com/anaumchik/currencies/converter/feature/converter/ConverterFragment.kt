@@ -28,6 +28,10 @@ class ConverterFragment : Fragment() {
         override fun onUpdateCurrencies(baseTotal: Double) {
             viewModel.onUpdateCurrencies(baseTotal)
         }
+
+        override fun onUpdateBaseRate(newBaseRate: Double) {
+            viewModel.onUpdateBaseRate(newBaseRate)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -43,12 +47,12 @@ class ConverterFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.startUpdates()
+        viewModel.onStartUpdates()
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.stopUpdates()
+        viewModel.onStopUpdates()
     }
 
     private fun observeViewModel() {

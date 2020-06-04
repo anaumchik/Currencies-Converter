@@ -32,6 +32,7 @@ class ConverterAdapter : RecyclerView.Adapter<ConverterViewHolder>() {
     fun onItemMoveToTop(fromPosition: Int) {
         Collections.swap(data, fromPosition, BASE_CURRENCY_POSITION)
         notifyItemMoved(fromPosition, BASE_CURRENCY_POSITION)
+        listener.onUpdateBaseRate(data[BASE_CURRENCY_POSITION].currencyRate)
     }
 
     companion object {

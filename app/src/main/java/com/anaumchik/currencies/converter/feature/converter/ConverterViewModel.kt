@@ -15,7 +15,7 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
     private val _currenciesLiveData = MutableLiveData<List<Currency>>()
     val currenciesLiveData: LiveData<List<Currency>> = _currenciesLiveData
 
-    fun startUpdates() {
+    fun onStartUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
 //            while (true) {
             getCurrencies()
@@ -24,12 +24,17 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
         }
     }
 
-    fun stopUpdates() {
+    fun onStopUpdates() {
         viewModelScope.cancel()
     }
 
     fun onUpdateCurrencies(baseTotal: Double) {
         val updatedCurrencies = updateTotal(_currenciesLiveData.value, baseTotal)
+        _currenciesLiveData.postValue(updatedCurrencies)
+    }
+
+    fun onUpdateBaseRate(newBaseRate: Double) {
+        val updatedCurrencies = updateTotalAndRate(_currenciesLiveData.value, newBaseRate)
         _currenciesLiveData.postValue(updatedCurrencies)
     }
 
@@ -50,6 +55,16 @@ class ConverterViewModel(private val converterInteractor: ConverterInteractor) :
                 currency.copy(currencyTotal = baseTotal)
             } else {
                 currency.copy(currencyTotal = baseTotal * currency.currencyRate)
+            }
+        }
+
+    private fun updateTotalAndRate(currencies: List<Currency>?, newBaseRate: Double): List<Currency>? = currencies
+        ?.toMutableList()
+        ?.mapIndexed { index, currency ->
+            if (index == 0) {
+                currency.copy(currencyRate = 1.0)
+            } else {
+                currency.copy(currencyRate = newBaseRate / currency.currencyRate)
             }
         }
 }
