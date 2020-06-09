@@ -13,8 +13,7 @@ class ConverterInteractorImpl(
     private val defaultCurrency = Currency(
         currencyIconRes = R.drawable.ic_eu,
         countryName = DEFAULT_COUNTRY_NAME,
-        countryCurrency = DEFAULT_COUNTRY_CURRENCY,
-        currencyTotal = DEFAULT_CURRENCY_TOTAL
+        countryCurrency = DEFAULT_COUNTRY_CURRENCY
     )
 
     override suspend fun getCurrencies(): List<Currency> {
@@ -38,6 +37,5 @@ class ConverterInteractorImpl(
     companion object {
         private const val DEFAULT_COUNTRY_NAME = "EUR"
         private const val DEFAULT_COUNTRY_CURRENCY = "EUR"
-        private const val DEFAULT_CURRENCY_TOTAL = 100.00
     }
 }
