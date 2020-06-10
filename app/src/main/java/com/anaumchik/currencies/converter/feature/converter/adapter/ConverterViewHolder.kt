@@ -1,7 +1,5 @@
 package com.anaumchik.currencies.converter.feature.converter.adapter
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -9,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.anaumchik.currencies.converter.models.Currency
 import com.anaumchik.currencies.converter.utils.ROUND_TWO_PLACES
+import com.anaumchik.currencies.converter.utils.SimpleTextWatcher
 import com.anaumchik.currencies.converter.utils.round
 import kotlinx.android.synthetic.main.item_converter.view.countryCurrencyTv
 import kotlinx.android.synthetic.main.item_converter.view.countryImg
@@ -80,19 +79,15 @@ class ConverterViewHolder(private val view: View) : RecyclerView.ViewHolder(view
     }
 
     private fun initListenerToUpdateCurrencies() {
-        etCurrency.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun afterTextChanged(s: Editable?) {
-                if (!isSwap && isInit && isBaseCurrency()) {
-                    if (s.toString().isNotEmpty()) {
-                        val baseTotal = s.toString().toDouble() * currency.currencyRate
-                        updateCurrencies(baseTotal)
-                    } else {
-                        if (!isZero) {
-                            updateCurrencies(0.0)
-                            isZero = !isZero
-                        }
+        etCurrency.addTextChangedListener(SimpleTextWatcher {
+            if (!isSwap && isInit && isBaseCurrency()) {
+                if (it.toString().isNotEmpty()) {
+                    val baseTotal = it.toString().toDouble() * currency.currencyRate
+                    updateCurrencies(baseTotal)
+                } else {
+                    if (!isZero) {
+                        updateCurrencies(0.0)
+                        isZero = !isZero
                     }
                 }
             }
